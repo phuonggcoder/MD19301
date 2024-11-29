@@ -17,4 +17,4 @@ const user = new schema({
     fullname:{type:String},
     age:{type:Number}
 });
-module.exports = mongoose.model.user || mongoose.model("user",user);
+module.exports = mongoose.model.user || mongoose.model("users",user);
