@@ -36,7 +36,7 @@ router.get('/all', async (req, res) => {
 // - Lấy danh sách tất cả các sản phẩm có số lượng lớn hơn 20
 router.get('/all-soluong', async (req, res) => {
     try {
-      const products = await productModel.find({soluong:{$gt:20}});
+      const products = await productModel.find({});
       res.status(200).json(products);
     } catch (err) {
       res.status(400).json({ status: false,message: "Có Lỗi Xảy Ra, Vui Lòng Rì Chai À Ghen" });
