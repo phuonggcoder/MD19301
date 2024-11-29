@@ -11,40 +11,32 @@ var upload = require("../utill/uploadConfig");
 
 // - Lấy danh sách tất cả các sản phẩm
 router.get('/all', async (req, res) => {
-  try {
-      const authHeader = req.header("Authorization");
-      if (!authHeader) {
-          return res.status(401).json({ status: 401, message: "Thiếu Authorization header" });
-      }
-
-      const token = authHeader.split(' ')[1];
-      if (!token) {
-          return res.status(401).json({ status: 401, message: "Token không hợp lệ" });
-      }
-
-      // Xác thực token
-      JWT.verify(token, config.SECRETKEY, async (err, decoded) => {
-          if (err) {
-              return res.status(403).json({ status: 403, error: "Token không hợp lệ", details: err });
-          }
-
-          try {
+    try {
+        // bo vao try 
+        const token = req.header("Authorization").split(' ')[1];
+        if(token){
+          JWT.verify(token, config.SECRETKEY, async function (err, id){
+            if(err){
+              res.status(403).json({"status": 403, "err": err});
+            }else{
               const products = await productModel.find({});
-              res.status(200).json(products);
-          } catch (err) {
-              res.status(500).json({ status: 500, message: "Lỗi server khi lấy danh sách sản phẩm", details: err });
-          }
-      });
+              res.status(200).json({status: true, message:"Thanh cong ",products});           }
+          });
+        }else{
+          res.status(401).json({"status": 401});
+        }
+//tu doan nay      
 
-  } catch (err) {
-      res.status(400).json({ status: false, message: "Có lỗi xảy ra, vui lòng thử lại", details: err.message });
-  }
-});
+
+    } catch (err) {
+      res.status(400).json({ status: false,message: "Có Lỗi Xảy Ra, Vui Lòng Rì Chai À Ghen" });
+    }
+  });
   
 // - Lấy danh sách tất cả các sản phẩm có số lượng lớn hơn 20
 router.get('/all-soluong', async (req, res) => {
     try {
-      const products = await productModel.find({soluong});
+      const products = await productModel.find({soluong:{$gt:20}});
       res.status(200).json(products);
     } catch (err) {
       res.status(400).json({ status: false,message: "Có Lỗi Xảy Ra, Vui Lòng Rì Chai À Ghen" });
