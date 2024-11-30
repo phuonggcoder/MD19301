@@ -3,35 +3,42 @@ const router = express.Router();
 const productModel = require('../models/productModel');  
 var JWT = require("jsonwebtoken");
 var config= require("../utill/tokenConfig");
-
-
 var upload = require("../utill/uploadConfig");
-// Tạo một collections có tên là Product: masp, tensp, gia, soluong --> thêm 5 dữ liệu sản phẩm bất kỳ
-// Viết một số API sau:
 
-// - Lấy danh sách tất cả các sản phẩm
+// Lấy danh sách tất cả các sản phẩm
 router.get('/all', async (req, res) => {
     try {
-        // bo vao try 
-        const token = req.header("Authorization").split(' ')[1];
-        if(token){
-          JWT.verify(token, config.SECRETKEY, async function (err, id){
-            if(err){
-              res.status(403).json({"status": 403, "err": err});
-            }else{
-              const products = await productModel.find({});
-              res.status(200).json({status: true, message:"Thanh cong ",products});           }
-          });
-        }else{
-          res.status(401).json({"status": 401});
+        const token = req.header("Authorization")?.split(' ')[1];
+        
+        if (token) {
+            JWT.verify(token, config.SECRETKEY, async function (err, decoded) {
+                if (err) {
+                    return res.status(403).json({
+                        "status": 403, 
+                        "message": "Invalid token or token expired"
+                    });
+                } else {
+                    const products = await productModel.find({});
+                    return res.status(200).json({
+                        status: true,
+                        message: "Products fetched successfully",
+                        products
+                    });
+                }
+            });
+        } else {
+            return res.status(401).json({
+                "status": 401, 
+                "message": "Missing Authorization Token"
+            });
         }
-//tu doan nay      
-
-
     } catch (err) {
-      res.status(400).json({ status: false,message: "Có Lỗi Xảy Ra, Vui Lòng Rì Chai À Ghen" });
+        return res.status(400).json({
+            status: false,
+            message: "An error occurred. Please try again later."
+        });
     }
-  });
+});
   
 // - Lấy danh sách tất cả các sản phẩm có số lượng lớn hơn 20
 router.get('/all-soluong', async (req, res) => {
