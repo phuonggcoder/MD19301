@@ -11,7 +11,7 @@ router.get('/all', async (req, res) => {
         const token = req.header("Authorization")?.split(' ')[1];
         
         if (token) {
-            JWT.verify(token, config.SECRETKEY, async function (err, decoded) {
+            JWT.verify(token, config.SECRETKEY, async function (err, id) {
                 if (err) {
                     return res.status(403).json({
                         "status": 403, 
