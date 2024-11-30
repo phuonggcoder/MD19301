@@ -15,13 +15,13 @@ router.get('/all', async (req, res) => {
                 if (err) {
                     return res.status(403).json({
                         "status": 403, 
-                        "message": "Invalid token or token expired"
+                        "message": "Token het han"
                     });
                 } else {
                     const products = await productModel.find({});
                     return res.status(200).json({
                         status: true,
-                        message: "Products fetched successfully",
+                        message: "Thanh cong",
                         products
                     });
                 }
@@ -29,13 +29,13 @@ router.get('/all', async (req, res) => {
         } else {
             return res.status(401).json({
                 "status": 401, 
-                "message": "Missing Authorization Token"
+                "message": "Thieu Token"
             });
         }
     } catch (err) {
         return res.status(400).json({
             status: false,
-            message: "An error occurred. Please try again later."
+            message: "Có Lỗi Xảy Ra, Vui Lòng Rì Chai À Ghen."
         });
     }
 });
@@ -46,7 +46,7 @@ router.get('/all-soluong', async (req, res) => {
       const products = await productModel.find({soluong:{$gt:20}});
       res.status(200).json(products);
     } catch (err) {
-      res.status(400).json({ status: false,message: "Có Lỗi Xảy Ra, Vui Lòng Rì Chai À Ghen" });
+      res.status(400).json({ status: false,message: "hen" });
     }
   });
 
@@ -70,7 +70,7 @@ router.get('/ds-slgia', async (req, res) => {
       const products = await productModel.find({
             $or:[
                 {soluong:{$lte:10}},
-                {gia:{$gte:15000}}
+                {gia:{$gte:15000}}Có Lỗi Xảy Ra, Vui Lòng Rì Chai À G
             ]
             
         });
