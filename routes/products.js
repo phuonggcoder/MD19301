@@ -70,7 +70,7 @@ router.get('/ds-slgia', async (req, res) => {
       const products = await productModel.find({
             $or:[
                 {soluong:{$lte:10}},
-                {gia:{$gte:15000}}Có Lỗi Xảy Ra, Vui Lòng Rì Chai À G
+                {gia:{$gte:15000}}
             ]
             
         });
